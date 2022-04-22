@@ -4,9 +4,13 @@ import Menu from './Navbar/Menu'
 import { Icon } from 'image/Icons'
 import Playlists from './Navbar/Playlists'
 import DownloadApp from './Navbar/DownloadApp'
+import SidebarCover from './Navbar/SidebarCover'
+import { useSelector } from 'react-redux'
 
 
 const Sidebar = () => {
+
+  const sidebar = useSelector(state => state.player.sidebar);
   return (
     <aside className="w-60 pt-6 flex flex-shrink-0 flex-col bg-black">
         <a href="#" className="px-6 mb-5">
@@ -36,6 +40,8 @@ const Sidebar = () => {
       <Playlists />
 
       <DownloadApp />
+
+      {sidebar && (<SidebarCover/>)}
 
     </aside>
   )
