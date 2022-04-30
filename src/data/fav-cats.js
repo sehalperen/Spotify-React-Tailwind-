@@ -8,7 +8,7 @@ export default [
     { 
         id: 2,
         title: 'Blues',
-        cover: '#8d67ab',
+        cover: 'https://t.scdn.co/images/ea364e99656e46a096ea1df50f581efe',
         color: '#1e3164'
     },
     {
@@ -31,4 +31,3 @@ export default [
     },
     
 ]
-
