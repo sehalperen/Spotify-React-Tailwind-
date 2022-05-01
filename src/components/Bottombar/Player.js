@@ -5,6 +5,7 @@ import CustomRange from "components/CustomRange";
 import { useEffect, useMemo, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setControls, setPlaying, setSidebar } from "stores/player";
+import FullScreenPlayer from "components/FullScreenPlayer";
 
 
 
@@ -13,11 +14,12 @@ function Player() {
     const fsRef = useRef()
     const [show, toggle] = useToggle(false);
     const isFullscreen = useFullscreen(fsRef, show, {onClose: () => toggle(false)});
-    const dispatch = useDispatch();
-    const { current,sidebar } = useSelector(state => state.player);
+
+    const dispatch = useDispatch()
+    const {current, sidebar} = useSelector(state => state.player)
 
     const [audio, state, controls, ref] = useAudio({
-        src: current.src
+        src: current?.src
       });
     
     useEffect(() => {
@@ -25,12 +27,14 @@ function Player() {
     }, [current]);
 
     useEffect(() => {
-        dispatch(setControls(controls));
-    }, [current]);
-
-    useEffect(() => {
         dispatch(setPlaying(state.playing));
     }, [state.playing]);
+
+    useEffect(() => {
+        dispatch(setControls(controls));
+    }, []);
+
+    
 
     const volumeIcon = useMemo(() => {
         if (state.volume === 0 || state.muted) 
@@ -91,7 +95,7 @@ function Player() {
                         <Icon size={16} name="Repeat"/>
                     </button>
                 </div>
-                <div className="w-11/12 flex items-center gap-x-2">
+                <div className="w-full flex items-center mt-1.5 gap-x-2">
                     {audio}
                     <div className="text-[0.688rem] text-white text-opacity-70">
                         {secondsToTime(state?.time)}
@@ -134,14 +138,18 @@ function Player() {
                         />
                     </div>
                     
-                    <button
-                    onclick={() => toggle()} 
+                    <button onClick={toggle} 
                     className="w-8 h-8 flex items-center justify-center text-white text-opacity-70 hover:text-opacity-100">
                         <Icon size={16} name="FullScreen"/>
                     </button>
             </div>
             <div ref={fsRef}>
-            bu alan fs olacak
+                {isFullscreen && <FullScreenPlayer 
+                toggle={toggle}
+                state={state}
+                controls={controls}
+                volumeIcon={volumeIcon}
+                />}
             </div>
         </div>
     )
